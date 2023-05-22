@@ -1,0 +1,5 @@
+recursive-include src/clp_ffi/clp/components/core/src *.hpp
+recursive-include src/clp_ffi/clp/components/core/src *.tpp
+include src/clp_ffi/clp/components/core/submodules/json/single_include/nlohmann/json.hpp
+include src/clp_ffi/clp_loglib_native/*.hpp
+include src/clp_ffi/clp_loglib_native/*.tpp

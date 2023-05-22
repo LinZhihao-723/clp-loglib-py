@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools >= 61.0", "setuptools_scm"]
+requires = ["setuptools >= 61.0", "setuptools_scm", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,6 +8,7 @@ version = "0.0.9"
 license = { text = "Apache License 2.0" }
 authors = [
     { name="david lion", email="david.lion@yscope.com" },
+    { name="zhihao lin", email="lin.zhihao@yscope.com" },
 ]
 description = "Logging/encoding/decoding using CLP's IR stream format"
 readme = "README.md"
