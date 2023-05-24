@@ -5,6 +5,8 @@ __pycache__
 # Packaging
 clp_logging.egg-info
 dist/
+build/
+wheelhouse
 
 # Testing
 unittest-logs/
