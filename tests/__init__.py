@@ -4,7 +4,6 @@ from typing import Iterable, Optional, Union
 from tests.test_handlers import (
     TestCLPBase,
     TestClpKeyValuePairLoggingBase,
-    TestCLPSegmentStreamingBase,
 )
 
 
@@ -35,9 +34,6 @@ def load_tests(
 
     for test_class in TestCLPBase.__subclasses__():
         add_tests(suite, loader, test_class)
-
-    for seg_test_class in TestCLPSegmentStreamingBase.__subclasses__():
-        add_tests(suite, loader, seg_test_class)
 
     for kv_pair_handler_test_class in TestClpKeyValuePairLoggingBase.__subclasses__():
         add_tests(suite, loader, kv_pair_handler_test_class)

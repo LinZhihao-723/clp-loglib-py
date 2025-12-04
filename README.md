@@ -189,75 +189,11 @@ from clp_logging.handlers import CLPSockHandler
 CLPSockHandler(Path("example.clp.zst")).stop_listener()
 ```
 
-## CLP readers (decoders)
+## Read IR streams
 
 > [!WARNING]
-> The readers and all the other non-logging APIs currently available in this library are scheduled
-> for deprecation in an upcoming release. To access our newest and improved CLP IR analytics
-> interface (which offers advanced features like high-performance decoding and enhanced query search
-> capabilities) check out [clp-ffi-py][9].
-
-### CLPStreamReader
-
-- Read/decode any arbitrary stream
-- Can be used as an iterator that returns each log message as an object
-- Can skip n logs: `clp_reader.skip_nlogs(N)`
-- Can skip to first log after given time (since unix epoch):
-  - `clp_reader.skip_to_time(TIME)`
-
-### CLPFileReader
-
-- Simple wrapper around CLPStreamHandler that calls open
-
-#### Example code: CLPFileReader
-
-```python
-from pathlib import Path
-from typing import List
-
-from clp_logging.readers import CLPFileReader, Log
-
-# create a list of all Log objects
-log_objects: List[Log] = []
-with CLPFileReader(Path("example.clp.zst")) as clp_reader:
-    for log in clp_reader:
-        log_objects.append(log)
-```
-
-### CLPSegmentStreaming
-
-* Classes that inherit from CLPBaseReader can only read a single CLP IR stream from start to finish. This is necessary because, to determine the timestamp of an individual log, the starting timestamp (from the IR stream preamble) and all timestamp deltas up to that log must be known. In scenarios where an IR stream is periodically uploaded in chunks, users would need to either continuously read the entire stream or re-read the entire stream from the start.
-* The CLPSegmentStreaming class has the ability to take an input IR stream and segment it, outputting multiple independent IR streams. This makes it possible to read arbitrary segments of the original input IR stream without needing to decode it from the start.
-* In technical terms, the segment streaming reader allows the read operation to start from a non-zero offset and streams the legally encoded logs from one stream to another.
-* Each read call will return encoded metadata that can be used to resume from the current call.
-
-#### Example code: CLPSegmentStreaming
-
-```python
-from clp_logging.readers import CLPSegmentStreaming
-from clp_logging.protocol import Metadata
-
-segment_idx: int = 0
-segment_max_size: int = 8192
-offset: int = 0
-metadata: Metadata = None
-while True:
-	bytes_read: int
-	with open("example.clp", "rb") as fin, open(f"{segment_idx}.clp", "wb") as fout:
-		bytes_read, metadata = CLPSegmentStreaming.read(
-			fin,
-			fout,
-			offset=offset,
-			max_bytes_to_write=segment_max_size,
-			metadata=metadata
-		)
-		segment_idx += 1
-		offset += bytes_read
-	if metadata == None:
-		break
-```
-
-In the example code provided, "example.clp" is streamed into segments named "0.clp", "1.clp", and so on. Each segment is smaller than 8192 bytes and can be decoded independently.
+> All readers are removed from this library since v0.0.15. To read an IR stream, use [clp-ffi-py][9]
+> instead.
 
 ## Log level timeout feature: CLPLogLevelTimeout
 
