@@ -5,9 +5,6 @@ CLP's intermediate representation (IR) is made to be:
     - Capable of flushing write buffers on demand so readers can access the
       latest data
 
-See [encoder.py](src/clp_logging/encoder.py) and
-[decoder.py](src/clp_logging/decoder.py) to see the implementation.
-
 # Background
 CLP parses a log event into zero or more variables, a timestamp, and a logtype.
 There are two major types of variables:

@@ -373,7 +373,7 @@ class CLPSockListener:
     @staticmethod
     def _handle_client(
         conn: socket.socket,
-        log_queue: "Queue[Tuple[int, bytes]]",
+        log_queue: "Queue[Tuple[int, Union[bytes, bytearray]]]",
     ) -> int:
         """
         Continuously reads from an individual `CLPSockHandler` and sends the
@@ -416,7 +416,7 @@ class CLPSockListener:
     @staticmethod
     def _aggregator(
         log_path: Path,
-        log_queue: "Queue[Tuple[int, bytes]]",
+        log_queue: "Queue[Tuple[int, Union[bytes, bytearray]]]",
         timestamp_format: Optional[str],
         timezone: Optional[str],
         timeout: int,
@@ -463,7 +463,7 @@ class CLPSockListener:
                 FourByteEncoder.encode_preamble(last_timestamp_ms, timestamp_format, timezone)
             )
             while not CLPSockListener._signaled:
-                msg: bytes
+                msg: Union[bytes, bytearray]
                 try:
                     loglevel, msg = log_queue.get(timeout=timeout)
                 except Empty:
@@ -524,7 +524,7 @@ class CLPSockListener:
         """
         sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         sock.settimeout(timeout)
-        log_queue: "Queue[Tuple[int, bytes]]" = Queue()
+        log_queue: "Queue[Tuple[int, Union[bytes, bytearray]]]" = Queue()
         ret: int = CLPSockListener._try_bind(sock, sock_path)
         sock.listen()
         os.write(parent_fd, b"\x00")
